@@ -1,0 +1,6 @@
+.idea/
+build/
+coverage/
+es5/
+es6/
+node_modules/

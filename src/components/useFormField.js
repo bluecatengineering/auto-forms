@@ -1,0 +1,26 @@
+import {useCallback, useContext} from 'react';
+
+import FormContext from './FormContext';
+
+export default name => {
+	const {state, dispatch} = useContext(FormContext);
+	const value = state.values[name];
+	const rule = state.rules[name];
+	const error = state.errors[name];
+	const extra = state.extras[name];
+	const setValue = useCallback(
+		value => {
+			dispatch({type: 'SET_VALUE', name, payload: value});
+			if (rule) {
+				dispatch({type: 'SET_ERROR', name, payload: rule(value)});
+			}
+		},
+		[rule]
+	);
+
+	const setError = useCallback(payload => dispatch({type: 'SET_ERROR', name, payload}), []);
+
+	const setExtra = useCallback(payload => dispatch({type: 'SET_EXTRA', name, payload}), []);
+
+	return {value, error, extra, setValue, setError, setExtra};
+};

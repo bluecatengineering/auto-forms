@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`connect returns a component which maps state 1`] = `
+<C
+  bar="x"
+  id="test"
+/>
+`;

@@ -1,0 +1,116 @@
+{
+  "name": "@bluecateng/auto-forms",
+  "version": "0.1.0",
+  "description": "Auto-wired form hooks",
+  "license": "ISC",
+  "scripts": {
+    "build:es5": "rm -rf es5 && BABEL_ENV=es5 babel -d es5 src",
+    "build:es6": "rm -rf es6 && BABEL_ENV=es6 babel -d es6 src",
+    "build": "npm run build:es5 && npm run build:es6",
+    "test": "jest --verbose",
+    "test-ci": "npm install && jest --ci --silent --reporters=jest-junit",
+    "lint": "eslint --ext .js,.jsx src",
+    "reformat": "prettier --write \"**/*.+(js|jsx|json|less)\"",
+    "prepack": "npm t && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:bluecatengineering/auto-forms.git"
+  },
+  "keywords": [
+    "react",
+    "hooks",
+    "form"
+  ],
+  "files": [
+    "index.js",
+    "es5",
+    "es6"
+  ],
+  "peerDependencies": {
+    "react": ">= 16.8"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-react": "^7.0.0",
+    "@bluecateng/eslint-config-react": "^0.3.0",
+    "@bluecateng/git-checks": "^0.1.1",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.13.0",
+    "eslint": "^5.16.0",
+    "husky": "^2.2.0",
+    "jest": "^24.8.0",
+    "jest-junit": "^6.4.0",
+    "lint-staged": "^8.1.6",
+    "lodash-es": "^4.17.11",
+    "prettier": "^1.17.1",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  },
+  "jest": {
+    "automock": true,
+    "clearMocks": true,
+    "collectCoverage": true,
+    "coveragePathIgnorePatterns": [
+      "/jest_helpers/"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    },
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest_helpers/setup-enzyme"
+    ],
+    "timers": "fake",
+    "transformIgnorePatterns": [
+      "node_modules/(?!(lodash-es|@bluecateng)/)"
+    ],
+    "unmockedModulePathPatterns": [
+      "enzyme",
+      "lodash-es",
+      "prop-types",
+      "react",
+      "react-dom"
+    ]
+  },
+  "jest-junit": {
+    "output": "build/tests.xml",
+    "classNameTemplate": "{classname}",
+    "titleTemplate": "{title}",
+    "ancestorSeparator": " / "
+  },
+  "eslintConfig": {
+    "extends": "@bluecateng/react"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "check-git-msg",
+      "pre-push": "check-git-commits"
+    }
+  },
+  "lint-staged": {
+    "linters": {
+      "*.{js,jsx}": [
+        "eslint --fix --max-warnings 0",
+        "prettier --write",
+        "git add"
+      ],
+      "*.{json,less,md,yml}": [
+        "prettier --write",
+        "git add"
+      ]
+    },
+    "ignore": [
+      "package.json",
+      "package-lock.json"
+    ]
+  }
+}
