@@ -28,7 +28,7 @@ export default AutoWiredTextInput;
 ```javascript
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connect, useFormState} from '@bluecatend/auto-forms';
+import {hasErrors} from '@bluecatend/auto-forms';
 
 const AutoWiredSubmit =  ({...props}) => {
          //use useFromState to hook into the auto wired forms state:
@@ -36,7 +36,7 @@ const AutoWiredSubmit =  ({...props}) => {
          return (
              <input 
               type="submit"
-              disabled={Object.values(errors).some(isNotNull)}
+              disabled={hasErrors()}
              /> 
          );
 };
@@ -50,7 +50,7 @@ export default AutoWiredSubmit;
 import { Form } from "@bluecateng/auto-forms";
 import { AutoWiredTextInput} from '...';
 import { AutoWiredSubmit } from '...';
-
+import { sendData } from '...';
 
 const FormExample = ({}) => {
    const initalValues = {
@@ -65,7 +65,7 @@ const FormExample = ({}) => {
      <Form 
       initalValues={initalValues} 
       rules={rules} 
-      onSubmit={(values)=>{sendData({values.name})}}
+      onSubmit={(values)=>{sendData(values.name)}}
      >
      <AutoWiredTextInput name='name' />
      <AutoWiredSubmit/>
@@ -79,7 +79,7 @@ export default FormExample
 ```
 ## Documentation
 
-`useFormField`- Returns the field by name as well as a function to edit the field outside of the input, similar to hooks in react.
+`useFormField`- Returns the field by value as well as a function to edit the field outside of the input, similar to hooks in react.
 
 
 `useFormState`- Returns object containing entire state of form.
