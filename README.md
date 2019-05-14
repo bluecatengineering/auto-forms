@@ -47,18 +47,18 @@ export default AutoWiredSubmit;
 ```
 ### Creating a form
 ```javascript
-import { Form } from "@bluecateng/auto-forms";
+import { Form, validateNotEmpty } from "@bluecateng/auto-forms";
 import { AutoWiredTextInput} from '...';
 import { AutoWiredSubmit } from '...';
 import { sendData } from '...';
 
-const FormExample = ({}) => {
+const FormExample = () => {
    const initalValues = {
      name: 'example',
    };
 
    const rules= {
-     'name': notEmpty('Name is required'),
+     'name': validateNotEmpty('Name is required'),
    };
 
    return (
