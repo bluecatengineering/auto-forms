@@ -28,11 +28,11 @@ export default AutoWiredTextInput;
 ```javascript
 import React from 'react';
 import PropTypes from 'prop-types';
-import {hasErrors} from '@bluecatend/auto-forms';
+import {useFormState} from '@bluecatend/auto-forms';
 
 const AutoWiredSubmit =  ({...props}) => {
          //use useFromState to hook into the auto wired forms state:
-         const {initialValues, values, errors} = useFormState();
+         const {hasErrors} = useFormState();
          return (
              <input 
               type="submit"
