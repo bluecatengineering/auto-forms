@@ -16,7 +16,8 @@ describe('useFormState', () => {
 		const values = {test: 'test-value'};
 		const errors = {test: 'test-error'};
 		const extras = {test: 'test-extra'};
-		useContext.mockReturnValue({state: {initialValues, values, errors, extras}});
+		const submit = jest.fn();
+		useContext.mockReturnValue({state: {initialValues, values, errors, extras}, submit});
 
 		const state = useFormState();
 		expect(state).toEqual({
@@ -24,6 +25,7 @@ describe('useFormState', () => {
 			values,
 			errors,
 			extras,
+			submit,
 			isChanged: expect.any(Function),
 			hasErrors: expect.any(Function),
 		});

@@ -16,6 +16,7 @@ exports[`Form rendering renders expected elements 1`] = `
           "test": "foo",
         },
       },
+      "submit": [Function],
     }
   }
 >

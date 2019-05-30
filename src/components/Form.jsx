@@ -43,10 +43,12 @@ const submitForm = ({rules, values, extras, initialValues}, dispatch, getActiveF
 			true
 		);
 
-		if (passed) {
-			const setErrors = errors => Object.entries(errors).forEach(([name, payload]) => setError(name, payload));
-			onSubmit(values, {initialValues, extras, setErrors});
+		if (!passed) {
+			return null;
 		}
+
+		const setErrors = errors => Object.entries(errors).forEach(([name, payload]) => setError(name, payload));
+		return onSubmit(values, {initialValues, extras, setErrors});
 	});
 };
 
@@ -61,12 +63,15 @@ const Form = ({
 	...props
 }) => {
 	const [state, dispatch] = useReducer(reducer, {initialValues, initialExtras, rules}, getInitialState);
-	const handleSubmit = useCallback(
-		event => (event.preventDefault(), submitForm(state, dispatch, getActiveFields, extraValidation, onSubmit)),
-		[state]
-	);
+	const submit = useCallback(() => submitForm(state, dispatch, getActiveFields, extraValidation, onSubmit), [
+		state,
+		getActiveFields,
+		extraValidation,
+		onSubmit,
+	]);
+	const handleSubmit = useCallback(event => (event.preventDefault(), submit()), [submit]);
 	return (
-		<FormContext.Provider value={{state, dispatch}}>
+		<FormContext.Provider value={{state, dispatch, submit}}>
 			<form {...props} onSubmit={handleSubmit}>
 				{children}
 			</form>
