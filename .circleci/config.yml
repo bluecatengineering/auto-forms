@@ -1,0 +1,10 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:8.16
+    steps:
+      - checkout
+      - run: npm run test-ci
+      - store_test_results:
+          path: build
