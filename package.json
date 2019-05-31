@@ -81,7 +81,7 @@
     ]
   },
   "jest-junit": {
-    "output": "build/tests.xml",
+    "output": "build/jest/results.xml",
     "classNameTemplate": "{classname}",
     "titleTemplate": "{title}",
     "ancestorSeparator": " / "
