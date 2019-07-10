@@ -15,12 +15,12 @@ export default name => {
 				dispatch({type: 'SET_ERROR', name, payload: rule(value)});
 			}
 		},
-		[rule]
+		[name, rule, dispatch]
 	);
 
-	const setError = useCallback(payload => dispatch({type: 'SET_ERROR', name, payload}), []);
+	const setError = useCallback(payload => dispatch({type: 'SET_ERROR', name, payload}), [name, dispatch]);
 
-	const setExtra = useCallback(payload => dispatch({type: 'SET_EXTRA', name, payload}), []);
+	const setExtra = useCallback(payload => dispatch({type: 'SET_EXTRA', name, payload}), [name, dispatch]);
 
 	return {value, error, extra, setValue, setError, setExtra};
 };
