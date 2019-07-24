@@ -13,7 +13,7 @@ npm install @bluecateng/auto-forms
 #### Input
 
 ```javascript
-import connect from '@bluecatend/auto-forms';
+import connect from '@bluecateng/auto-forms';
 import ComponentToConnect from '...';
 
 //Use the connect function to map the state of the component to the state of the auto-wired form:
@@ -34,10 +34,10 @@ export default AutoWiredTextInput;
 ```javascript
 import React from 'react';
 import PropTypes from 'prop-types';
-import {useFormState} from '@bluecatend/auto-forms';
+import {useFormState} from '@bluecateng/auto-forms';
 
 const AutoWiredSubmit = ({...props}) => {
-	//use useFromState to hook into the auto wired forms state:
+	//use useFormState to hook into the auto wired forms state:
 	const {hasErrors} = useFormState();
 	return <input type="submit" disabled={hasErrors()} />;
 };
@@ -54,7 +54,7 @@ import {AutoWiredSubmit} from '...';
 import {sendData} from '...';
 
 const FormExample = () => {
-	const initalValues = {
+	const initialValues = {
 		name: 'example',
 	};
 
@@ -64,7 +64,7 @@ const FormExample = () => {
 
 	return (
 		<Form
-			initalValues={initalValues}
+			initialValues={initialValues}
 			rules={rules}
 			onSubmit={values => {
 				sendData(values.name);
@@ -80,9 +80,9 @@ export default FormExample;
 
 ## Documentation
 
-`useFormField`- Returns the field by value as well as a function to edit the field outside of the input, similar to hooks in react.
+`useFormField`- Returns the field by value as well as a function to edit the field outside of the input, similar to hooks in React.
 
-`useFormState`- Returns object containing entire state of form.
+`useFormState`- Returns an object containing the entire state of form.
 
 `validateAnd`- Validates an array of functions, only returns null if all validations rules pass.
 
