@@ -1,4 +1,4 @@
-import React, {useCallback, useReducer} from 'react';
+import React, {forwardRef, useCallback, useReducer} from 'react';
 import PropTypes from 'prop-types';
 import identity from 'lodash-es/identity';
 
@@ -52,32 +52,25 @@ const submitForm = ({rules, values, extras, initialValues}, dispatch, getActiveF
 	});
 };
 
-const Form = ({
-	initialValues,
-	initialExtras,
-	rules,
-	children,
-	getActiveFields,
-	extraValidation,
-	onSubmit,
-	...props
-}) => {
-	const [state, dispatch] = useReducer(reducer, {initialValues, initialExtras, rules}, getInitialState);
-	const submit = useCallback(() => submitForm(state, dispatch, getActiveFields, extraValidation, onSubmit), [
-		state,
-		getActiveFields,
-		extraValidation,
-		onSubmit,
-	]);
-	const handleSubmit = useCallback(event => (event.preventDefault(), submit()), [submit]);
-	return (
-		<FormContext.Provider value={{state, dispatch, submit}}>
-			<form {...props} onSubmit={handleSubmit}>
-				{children}
-			</form>
-		</FormContext.Provider>
-	);
-};
+const Form = forwardRef(
+	({initialValues, initialExtras, rules, children, getActiveFields, extraValidation, onSubmit, ...props}, ref) => {
+		const [state, dispatch] = useReducer(reducer, {initialValues, initialExtras, rules}, getInitialState);
+		const submit = useCallback(() => submitForm(state, dispatch, getActiveFields, extraValidation, onSubmit), [
+			state,
+			getActiveFields,
+			extraValidation,
+			onSubmit,
+		]);
+		const handleSubmit = useCallback(event => (event.preventDefault(), submit()), [submit]);
+		return (
+			<FormContext.Provider value={{state, dispatch, submit}}>
+				<form {...props} ref={ref} onSubmit={handleSubmit}>
+					{children}
+				</form>
+			</FormContext.Provider>
+		);
+	}
+);
 
 Form.propTypes = {
 	initialValues: PropTypes.object.isRequired,
