@@ -1,4 +1,4 @@
-export default rules => (...args) => {
+export default (rules) => (...args) => {
 	for (const rule of rules) {
 		const result = rule(...args);
 		if (result) {

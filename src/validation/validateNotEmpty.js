@@ -1,1 +1,1 @@
-export default message => value => (value && value.trim() ? null : message);
+export default (message) => (value) => (value && value.trim() ? null : message);

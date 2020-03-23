@@ -37,7 +37,7 @@ const submitForm = ({rules, values, extras, initialValues}, dispatch, getActiveF
 		return o;
 	}, {});
 
-	return Promise.resolve(extraValidation(errors, values, extras, initialValues)).then(errors => {
+	return Promise.resolve(extraValidation(errors, values, extras, initialValues)).then((errors) => {
 		const passed = Object.entries(errors).reduce(
 			(r, [name, payload]) => (isNotNull(payload) ? (setError(name, payload), false) : r),
 			true
@@ -47,7 +47,7 @@ const submitForm = ({rules, values, extras, initialValues}, dispatch, getActiveF
 			return null;
 		}
 
-		const setErrors = errors => Object.entries(errors).forEach(([name, payload]) => setError(name, payload));
+		const setErrors = (errors) => Object.entries(errors).forEach(([name, payload]) => setError(name, payload));
 		return onSubmit(values, {initialValues, extras, setErrors});
 	});
 };
@@ -61,7 +61,7 @@ const Form = forwardRef(
 			extraValidation,
 			onSubmit,
 		]);
-		const handleSubmit = useCallback(event => (event.preventDefault(), submit()), [submit]);
+		const handleSubmit = useCallback((event) => (event.preventDefault(), submit()), [submit]);
 		return (
 			<FormContext.Provider value={{state, dispatch, submit}}>
 				<form {...props} ref={ref} onSubmit={handleSubmit}>

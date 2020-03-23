@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {render} from 'react-dom';
 import {act} from 'react-dom/test-utils';
 import {shallow} from 'enzyme';
@@ -11,11 +11,13 @@ jest.unmock('../../src/components/Form');
 
 const Test = () => {
 	const {state, dispatch} = useContext(FormContext);
-	if (state.values.test === 'foo') {
-		dispatch({type: 'SET_VALUE', name: 'test', payload: 'new-value'});
-		dispatch({type: 'SET_EXTRA', name: 'test', payload: 'new-extra'});
-		dispatch({type: 'OTHER', name: 'test', payload: 'new-other'});
-	}
+	useEffect(() => {
+		if (state.values.test === 'foo') {
+			dispatch({type: 'SET_VALUE', name: 'test', payload: 'new-value'});
+			dispatch({type: 'SET_EXTRA', name: 'test', payload: 'new-extra'});
+			dispatch({type: 'OTHER', name: 'test', payload: 'new-other'});
+		}
+	});
 	return <div />;
 };
 
@@ -32,43 +34,44 @@ describe('Form', () => {
 	});
 
 	describe('behaviour', () => {
-		it('calls onSubmit if the validation passes', done => {
-			const initialValues = {test: 'foo'};
-			const preventDefault = jest.spyOn(Event.prototype, 'preventDefault');
+		it('calls onSubmit if the validation passes', () =>
+			new Promise((resolve) => {
+				const initialValues = {test: 'foo'};
+				const preventDefault = jest.spyOn(Event.prototype, 'preventDefault');
 
-			const onSubmit = jest.fn().mockImplementation((values, {setErrors}) => {
-				expect(preventDefault).toHaveBeenCalledTimes(1);
-				expect(onSubmit.mock.calls).toEqual([
-					[
-						{test: 'new-value'},
-						{
-							initialValues,
-							extras: {test: 'new-extra'},
-							setErrors: expect.any(Function),
-						},
-					],
-				]);
+				const onSubmit = jest.fn().mockImplementation((values, {setErrors}) => {
+					expect(preventDefault).toHaveBeenCalledTimes(1);
+					expect(onSubmit.mock.calls).toEqual([
+						[
+							{test: 'new-value'},
+							{
+								initialValues,
+								extras: {test: 'new-extra'},
+								setErrors: expect.any(Function),
+							},
+						],
+					]);
 
-				act(() => {
-					setErrors({foo: 'foo-error', bar: 'bar-error'});
+					act(() => {
+						setErrors({foo: 'foo-error', bar: 'bar-error'});
+					});
+
+					resolve();
 				});
 
-				done();
-			});
+				const container = document.createElement('div');
+				act(() => {
+					render(
+						<Form id="test" initialValues={initialValues} rules={{}} onSubmit={onSubmit}>
+							<Test />
+						</Form>,
+						container
+					);
+				});
 
-			const container = document.createElement('div');
-			act(() => {
-				render(
-					<Form id="test" initialValues={initialValues} rules={{}} onSubmit={onSubmit}>
-						<Test />
-					</Form>,
-					container
-				);
-			});
-
-			const form = container.querySelector('#test');
-			form.dispatchEvent(new Event('submit'));
-		});
+				const form = container.querySelector('#test');
+				form.dispatchEvent(new Event('submit'));
+			}));
 
 		it('does not call onSubmit if the validation fails', () => {
 			const onSubmit = jest.fn();

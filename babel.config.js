@@ -3,7 +3,10 @@ module.exports = {
 	env: {
 		test: {
 			sourceMaps: 'both',
-			presets: [['@babel/env', {loose: true, targets: {node: true}}], ['@babel/react', {useBuiltIns: true}]],
+			presets: [
+				['@babel/env', {loose: true, targets: {node: true}}],
+				['@babel/react', {useBuiltIns: true}],
+			],
 		},
 		es5: {
 			presets: [

@@ -17,14 +17,11 @@ import connect from '@bluecateng/auto-forms';
 import ComponentToConnect from '...';
 
 //Use the connect function to map the state of the component to the state of the auto-wired form:
-const AutoWiredTextInput = connect(
-	ComponentToConnect,
-	({value, error, setValue}) => ({
-		value,
-		error,
-		onChange: useCallback(({target: {value}}) => setValue(value), [setValue]),
-	})
-);
+const AutoWiredTextInput = connect(ComponentToConnect, ({value, error, setValue}) => ({
+	value,
+	error,
+	onChange: useCallback(({target: {value}}) => setValue(value), [setValue]),
+}));
 
 export default AutoWiredTextInput;
 ```
@@ -66,7 +63,7 @@ const FormExample = () => {
 		<Form
 			initialValues={initialValues}
 			rules={rules}
-			onSubmit={values => {
+			onSubmit={(values) => {
 				sendData(values.name);
 			}}>
 			<AutoWiredTextInput name="name" />

@@ -1,1 +1,1 @@
-export default (rx, message) => value => (!value || rx.test(value) ? null : message);
+export default (rx, message) => (value) => (!value || rx.test(value) ? null : message);

@@ -10,7 +10,7 @@
     "test": "jest --verbose",
     "test-ci": "npm install && jest --ci --silent --reporters=jest-junit",
     "lint": "eslint --ext .js,.jsx src",
-    "reformat": "prettier --write \"**/*.+(js|jsx|json|less)\"",
+    "reformat": "prettier --write .",
     "prepack": "npm t && npm run build"
   },
   "repository": {
@@ -31,24 +31,24 @@
     "react": ">= 16.8"
   },
   "devDependencies": {
-    "@babel/cli": "^7.7.7",
-    "@babel/core": "^7.7.7",
-    "@babel/preset-env": "^7.7.7",
-    "@babel/preset-react": "^7.7.4",
-    "@bluecateng/eslint-config-react": "^1.1.0",
-    "@bluecateng/git-checks": "^0.2.0",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "@babel/preset-react": "^7.9.1",
+    "@bluecateng/eslint-config-react": "^1.2.0",
+    "@bluecateng/git-checks": "^0.3.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "eslint": "^6.8.0",
-    "husky": "^3.1.0",
-    "jest": "^24.9.0",
+    "husky": "^4.2.3",
+    "jest": "^25.1.0",
     "jest-junit": "^10.0.0",
-    "lint-staged": "^9.5.0",
+    "lint-staged": "^10.0.8",
     "lodash-es": "^4.17.15",
-    "prettier": "^1.19.1",
+    "prettier": "^2.0.1",
     "prop-types": "^15.7.2",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   },
   "jest": {
     "automock": true,
@@ -97,15 +97,12 @@
     }
   },
   "lint-staged": {
-    "(package.json|package-lock.json)": [],
     "*.{js,jsx}": [
       "eslint --fix --max-warnings 0",
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "*.{json,less,md,yml}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   }
 }

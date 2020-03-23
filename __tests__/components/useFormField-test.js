@@ -7,7 +7,7 @@ jest.unmock('../../src/components/useFormField');
 jest.mock('react', () => ({
 	...jest.requireActual('react'),
 	useContext: jest.fn(),
-	useCallback: fn => fn,
+	useCallback: (fn) => fn,
 }));
 
 describe('useFormField', () => {
