@@ -18,7 +18,7 @@ describe('useFormField', () => {
 		const rules = {test: rule};
 		const errors = {test: 'test-error'};
 		const extras = {test: 'test-extra'};
-		useContext.mockReturnValue({state: {values, rules, errors, extras}, dispatch});
+		useContext.mockReturnValue({state: {values, errors, extras}, dispatch, rules});
 
 		const data = useFormField('test');
 		expect(data).toEqual({
@@ -44,7 +44,7 @@ describe('useFormField', () => {
 
 	it('ignores missing rules', () => {
 		const dispatch = jest.fn();
-		useContext.mockReturnValue({state: {values: {}, rules: {}, errors: {}, extras: {}}, dispatch});
+		useContext.mockReturnValue({state: {values: {}, errors: {}, extras: {}}, dispatch, rules: {}});
 
 		const data = useFormField('test');
 		data.setValue('new-value');

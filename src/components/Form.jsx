@@ -18,15 +18,14 @@ const reducer = (state, {type, name, payload}) => {
 	return state;
 };
 
-const getInitialState = ({initialValues, initialExtras, rules}) => ({
+const getInitialState = ({initialValues, initialExtras}) => ({
 	initialValues,
-	rules,
 	values: initialValues,
 	errors: {},
 	extras: initialExtras,
 });
 
-const submitForm = ({rules, values, extras, initialValues}, dispatch, getActiveFields, extraValidation, onSubmit) => {
+const submitForm = ({values, extras, initialValues}, dispatch, rules, getActiveFields, extraValidation, onSubmit) => {
 	const setError = (name, payload) => dispatch({type: 'SET_ERROR', name, payload});
 	const keys = getActiveFields ? getActiveFields(values, extras) : Object.keys(values);
 	const errors = keys.reduce((o, key) => {
@@ -54,16 +53,17 @@ const submitForm = ({rules, values, extras, initialValues}, dispatch, getActiveF
 
 const Form = forwardRef(
 	({initialValues, initialExtras, rules, children, getActiveFields, extraValidation, onSubmit, ...props}, ref) => {
-		const [state, dispatch] = useReducer(reducer, {initialValues, initialExtras, rules}, getInitialState);
-		const submit = useCallback(() => submitForm(state, dispatch, getActiveFields, extraValidation, onSubmit), [
+		const [state, dispatch] = useReducer(reducer, {initialValues, initialExtras}, getInitialState);
+		const submit = useCallback(() => submitForm(state, dispatch, rules, getActiveFields, extraValidation, onSubmit), [
 			state,
+			rules,
 			getActiveFields,
 			extraValidation,
 			onSubmit,
 		]);
 		const handleSubmit = useCallback((event) => (event.preventDefault(), submit()), [submit]);
 		return (
-			<FormContext.Provider value={{state, dispatch, submit}}>
+			<FormContext.Provider value={{rules, state, dispatch, submit}}>
 				<form {...props} ref={ref} onSubmit={handleSubmit}>
 					{children}
 				</form>

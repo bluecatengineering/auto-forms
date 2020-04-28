@@ -1,6 +1,6 @@
 {
   "name": "@bluecateng/auto-forms",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Auto-wired form hooks",
   "license": "ISC",
   "scripts": {

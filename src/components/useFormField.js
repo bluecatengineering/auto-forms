@@ -3,9 +3,9 @@ import {useCallback, useContext} from 'react';
 import FormContext from './FormContext';
 
 export default (name) => {
-	const {state, dispatch} = useContext(FormContext);
+	const {state, dispatch, rules} = useContext(FormContext);
+	const rule = rules[name];
 	const value = state.values[name];
-	const rule = state.rules[name];
 	const error = state.errors[name];
 	const extra = state.extras[name];
 	const setValue = useCallback(

@@ -5,13 +5,13 @@ exports[`Form rendering renders expected elements 1`] = `
   value={
     Object {
       "dispatch": [Function],
+      "rules": Object {},
       "state": Object {
         "errors": Object {},
         "extras": Object {},
         "initialValues": Object {
           "test": "foo",
         },
-        "rules": Object {},
         "values": Object {
           "test": "foo",
         },
