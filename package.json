@@ -8,7 +8,7 @@
     "build:es6": "rm -rf es6 && BABEL_ENV=es6 babel -d es6 src",
     "build": "npm run build:es5 && npm run build:es6",
     "test": "jest --verbose",
-    "test-ci": "npm install && jest --ci --silent --reporters=jest-junit",
+    "test-ci": "npm ci && jest --ci --silent --reporters=jest-junit",
     "lint": "eslint --ext .js,.jsx src",
     "reformat": "prettier --write .",
     "prepack": "npm t && npm run build"
@@ -31,21 +31,21 @@
     "react": ">= 16.8"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.9.0",
-    "@babel/preset-env": "^7.9.5",
-    "@babel/preset-react": "^7.9.4",
-    "@bluecateng/eslint-config-react": "^1.2.0",
+    "@babel/cli": "^7.10.4",
+    "@babel/core": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-react": "^7.10.4",
+    "@bluecateng/eslint-config-react": "^1.3.0",
     "@bluecateng/git-checks": "^0.3.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
-    "eslint": "^6.8.0",
+    "eslint": "^7.4.0",
     "husky": "^4.2.5",
-    "jest": "^25.3.0",
-    "jest-junit": "^10.0.0",
-    "lint-staged": "^10.1.3",
+    "jest": "^26.1.0",
+    "jest-junit": "^11.0.1",
+    "lint-staged": "^10.2.11",
     "lodash-es": "^4.17.15",
-    "prettier": "^2.0.4",
+    "prettier": "^2.0.5",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
@@ -81,7 +81,7 @@
     ]
   },
   "jest-junit": {
-    "output": "build/jest/results.xml",
+    "outputDirectory": "build",
     "classNameTemplate": "{classname}",
     "titleTemplate": "{title}",
     "ancestorSeparator": " / "
