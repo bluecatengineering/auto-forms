@@ -1,4 +1,4 @@
-import React, {forwardRef, useCallback, useReducer} from 'react';
+import {forwardRef, useCallback, useReducer} from 'react';
 import PropTypes from 'prop-types';
 import identity from 'lodash-es/identity';
 

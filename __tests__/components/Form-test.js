@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import {useContext, useEffect} from 'react';
 import {render} from 'react-dom';
 import {act} from 'react-dom/test-utils';
 import {shallow} from 'enzyme';
