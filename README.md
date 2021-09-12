@@ -1,4 +1,4 @@
-# Auto-Forms &middot; [![GitHub license](https://img.shields.io/badge/license-ISC-blue.svg)](https://github.com/bluecatengineering/auto-forms/blob/use-circleci/LICENSE) [![npm version](https://img.shields.io/npm/v/@bluecateng/auto-forms.svg?style=flat)](https://www.npmjs.com/package/@bluecateng/auto-forms) [![CircleCI](https://circleci.com/gh/bluecatengineering/auto-forms.svg?style=shield)](https://circleci.com/gh/bluecatengineering/auto-forms)
+# Auto-Forms &middot; [![GitHub license](https://img.shields.io/badge/license-ISC-blue.svg)](https://github.com/bluecatengineering/auto-forms/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/@bluecateng/auto-forms.svg?style=flat)](https://www.npmjs.com/package/@bluecateng/auto-forms) [![CircleCI](https://circleci.com/gh/bluecatengineering/auto-forms.svg?style=shield)](https://circleci.com/gh/bluecatengineering/auto-forms)
 
 Auto-forms is a library that helps you quickly create "auto-wired" forms in React. Auto-Forms is a small library which ensures the least amount of performance hit possible, and makes it easy to create forms that already have the values, validation functions, error messages, and submit functions all work seamlessly together.
 
@@ -65,7 +65,8 @@ const FormExample = () => {
 			rules={rules}
 			onSubmit={(values) => {
 				sendData(values.name);
-			}}>
+			}}
+		>
 			<AutoWiredTextInput name="name" />
 			<AutoWiredSubmit />
 		</Form>
