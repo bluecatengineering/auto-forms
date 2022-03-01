@@ -56,6 +56,7 @@
     "clearMocks": true,
     "collectCoverage": true,
     "coveragePathIgnorePatterns": [
+      "/node_modules/",
       "/jest_helpers/"
     ],
     "coverageThreshold": {

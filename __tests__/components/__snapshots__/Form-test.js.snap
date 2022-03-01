@@ -4,15 +4,12 @@ exports[`Form rendering renders expected elements 1`] = `
 <Context.Provider
   value={
     Object {
-      "dispatch": [Function],
+      "dispatch": [MockFunction],
+      "reset": [Function],
       "rules": Object {},
       "state": Object {
-        "errors": Object {},
-        "extras": Object {},
+        "initialExtras": Object {},
         "initialValues": Object {
-          "test": "foo",
-        },
-        "values": Object {
           "test": "foo",
         },
       },
@@ -22,6 +19,7 @@ exports[`Form rendering renders expected elements 1`] = `
 >
   <form
     id="test"
+    onReset={[Function]}
     onSubmit={[Function]}
   >
     <div />

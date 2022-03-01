@@ -4,12 +4,6 @@ import useFormField from '../../src/components/useFormField';
 
 jest.unmock('../../src/components/useFormField');
 
-jest.mock('react', () => ({
-	...jest.requireActual('react'),
-	useContext: jest.fn(),
-	useCallback: (fn) => fn,
-}));
-
 describe('useFormField', () => {
 	it('returns an object with expected fields', () => {
 		const rule = jest.fn().mockReturnValue('rule-error');

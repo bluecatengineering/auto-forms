@@ -5,11 +5,6 @@ import isNotNull from '../../src/utils/isNotNull';
 
 jest.unmock('../../src/components/useFormState');
 
-jest.mock('react', () => ({
-	...jest.requireActual('react'),
-	useContext: jest.fn(),
-}));
-
 describe('useFormState', () => {
 	it('returns an object with expected fields', () => {
 		const initialValues = {test: 'test-initial'};
@@ -17,7 +12,8 @@ describe('useFormState', () => {
 		const errors = {test: 'test-error'};
 		const extras = {test: 'test-extra'};
 		const submit = jest.fn();
-		useContext.mockReturnValue({state: {initialValues, values, errors, extras}, submit});
+		const reset = jest.fn();
+		useContext.mockReturnValue({state: {initialValues, values, errors, extras}, submit, reset});
 
 		const state = useFormState();
 		expect(state).toEqual({
@@ -26,6 +22,7 @@ describe('useFormState', () => {
 			errors,
 			extras,
 			submit,
+			reset,
 			isChanged: expect.any(Function),
 			hasErrors: expect.any(Function),
 		});

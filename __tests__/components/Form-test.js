@@ -1,25 +1,10 @@
-import {useContext, useEffect} from 'react';
-import {render} from 'react-dom';
-import {act} from 'react-dom/test-utils';
+import {useReducer} from 'react';
 import {shallow} from 'enzyme';
 
 import Form from '../../src/components/Form';
 import isNotNull from '../../src/utils/isNotNull';
-import FormContext from '../../src/components/FormContext';
 
 jest.unmock('../../src/components/Form');
-
-const Test = () => {
-	const {state, dispatch} = useContext(FormContext);
-	useEffect(() => {
-		if (state.values.test === 'foo') {
-			dispatch({type: 'SET_VALUE', name: 'test', payload: 'new-value'});
-			dispatch({type: 'SET_EXTRA', name: 'test', payload: 'new-extra'});
-			dispatch({type: 'OTHER', name: 'test', payload: 'new-other'});
-		}
-	});
-	return <div />;
-};
 
 describe('Form', () => {
 	describe('rendering', () => {
@@ -34,44 +19,64 @@ describe('Form', () => {
 	});
 
 	describe('behaviour', () => {
-		it('calls onSubmit if the validation passes', () =>
-			new Promise((resolve) => {
-				const initialValues = {test: 'foo'};
-				const preventDefault = jest.spyOn(Event.prototype, 'preventDefault');
+		it('reducer sets state depending on action', () => {
+			const state = {foo: 'test'};
+			shallow(
+				<Form id="test" initialValues={{}} rules={{}}>
+					<div />
+				</Form>
+			);
+			const reducer = useReducer.mock.calls[0][0];
+			expect(reducer(state, {type: 'SET_VALUE', name: 'other', payload: 'bar'})).toEqual({
+				foo: 'test',
+				values: {other: 'bar'},
+			});
+			expect(reducer(state, {type: 'SET_ERROR', name: 'other', payload: 'bar-error'})).toEqual({
+				foo: 'test',
+				errors: {other: 'bar-error'},
+			});
+			expect(reducer(state, {type: 'SET_EXTRA', name: 'other', payload: 'bar-extra'})).toEqual({
+				foo: 'test',
+				extras: {other: 'bar-extra'},
+			});
+			expect(reducer(state, {type: 'RESET', payload: {other: 'bar'}})).toEqual({other: 'bar'});
+			expect(reducer(state, {type: 'FAKE', name: 'fake', payload: 'fake'})).toEqual(state);
+		});
 
-				const onSubmit = jest.fn().mockImplementation((values, {setErrors}) => {
-					expect(preventDefault).toHaveBeenCalledTimes(1);
+		it('calls onSubmit if validation passes', () => {
+			const initialValues = {test: 'foo'};
+			const onSubmit = jest.fn();
+			const preventDefault = jest.fn();
+			const event = {preventDefault};
+			const dispatch = jest.fn();
+			useReducer.mockReturnValue([{errors: {}, extras: {}, initialValues, values: initialValues}, dispatch]);
+
+			const wrapper = shallow(
+				<Form id="test" initialValues={initialValues} rules={{}} onSubmit={onSubmit}>
+					<div />
+				</Form>
+			);
+			return wrapper
+				.find('#test')
+				.prop('onSubmit')(event)
+				.then(() => {
+					expect(preventDefault.mock.calls).toEqual([[]]);
 					expect(onSubmit.mock.calls).toEqual([
 						[
-							{test: 'new-value'},
+							initialValues,
 							{
 								initialValues,
-								extras: {test: 'new-extra'},
+								extras: {},
 								setErrors: expect.any(Function),
 							},
 						],
 					]);
 
-					act(() => {
-						setErrors({foo: 'foo-error', bar: 'bar-error'});
-					});
-
-					resolve();
+					const setErrors = onSubmit.mock.calls[0][1].setErrors;
+					setErrors({foo: 'foo-test'});
+					expect(dispatch.mock.calls).toEqual([[{name: 'foo', payload: 'foo-test', type: 'SET_ERROR'}]]);
 				});
-
-				const container = document.createElement('div');
-				act(() => {
-					render(
-						<Form id="test" initialValues={initialValues} rules={{}} onSubmit={onSubmit}>
-							<Test />
-						</Form>,
-						container
-					);
-				});
-
-				const form = container.querySelector('#test');
-				form.dispatchEvent(new Event('submit'));
-			}));
+		});
 
 		it('does not call onSubmit if the validation fails', () => {
 			const onSubmit = jest.fn();
@@ -79,7 +84,12 @@ describe('Form', () => {
 			const rule = jest.fn().mockReturnValue('rule-error');
 			const getActiveFields = jest.fn().mockReturnValue(['test']);
 			const extraValidation = jest.fn().mockReturnValue({foo: 'foo-error', bar: 'bar-error'});
-			const event = {preventDefault: jest.fn()};
+			isNotNull.mockReturnValueOnce(true).mockReturnValueOnce(false);
+			const preventDefault = jest.fn();
+			const event = {preventDefault};
+			const dispatch = jest.fn();
+			const state = {errors: {}, extras: {}, initialValues, values: initialValues};
+			useReducer.mockReturnValue([state, dispatch]);
 			const wrapper = shallow(
 				<Form
 					id="test"
@@ -90,15 +100,40 @@ describe('Form', () => {
 					onSubmit={onSubmit}
 				/>
 			);
-			const handleSubmit = wrapper.find('#test').prop('onSubmit');
-			isNotNull.mockReturnValueOnce(true).mockReturnValueOnce(false);
-			return handleSubmit(event).then(() => {
-				expect(rule.mock.calls).toEqual([['foo']]);
-				expect(getActiveFields.mock.calls).toEqual([[initialValues, {}]]);
-				expect(extraValidation.mock.calls).toEqual([[{test: 'rule-error'}, initialValues, {}, initialValues]]);
-				expect(isNotNull.mock.calls).toEqual([['foo-error'], ['bar-error']]);
-				expect(onSubmit).not.toHaveBeenCalled();
-			});
+			return wrapper
+				.find('#test')
+				.prop('onSubmit')(event)
+				.then(() => {
+					expect(rule.mock.calls).toEqual([['foo']]);
+					expect(getActiveFields.mock.calls).toEqual([[initialValues, {}]]);
+					expect(extraValidation.mock.calls).toEqual([[{test: 'rule-error'}, initialValues, {}, initialValues]]);
+					expect(isNotNull.mock.calls).toEqual([['foo-error'], ['bar-error']]);
+					expect(onSubmit.mock.calls).toEqual([]);
+				});
+		});
+
+		it('resets the form state', () => {
+			const initialValues = {test: 'foo'};
+			const preventDefault = jest.fn();
+			const event = {preventDefault};
+			const dispatch = jest.fn();
+			useReducer.mockReturnValue([{test: 'bar'}, dispatch]);
+
+			const wrapper = shallow(
+				<Form id="test" initialValues={initialValues} rules={{}}>
+					<div />
+				</Form>
+			);
+			wrapper.find('#test').prop('onReset')(event);
+			expect(preventDefault.mock.calls).toEqual([[]]);
+			expect(dispatch.mock.calls).toEqual([
+				[
+					{
+						type: 'RESET',
+						payload: {errors: {}, extras: {}, initialValues, values: initialValues},
+					},
+				],
+			]);
 		});
 	});
 });
