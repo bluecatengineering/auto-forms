@@ -79,6 +79,8 @@ const Form = forwardRef(
 	}
 );
 
+Form.displayName = 'Form';
+
 Form.propTypes = {
 	initialValues: PropTypes.object.isRequired,
 	initialExtras: PropTypes.object,
