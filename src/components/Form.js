@@ -53,19 +53,20 @@ const submitForm = ({values, extras, initialValues}, dispatch, rules, getActiveF
 	});
 };
 
-const resetForm = (initialValues, initialExtras, dispatch) => dispatch({type: "RESET", payload: getInitialState({initialValues, initialExtras})})
+const resetForm = (initialValues, initialExtras, dispatch) =>
+	dispatch({type: 'RESET', payload: getInitialState({initialValues, initialExtras})});
 
 const Form = forwardRef(
 	({initialValues, initialExtras, rules, children, getActiveFields, extraValidation, onSubmit, ...props}, ref) => {
 		const [state, dispatch] = useReducer(reducer, {initialValues, initialExtras}, getInitialState);
-		const submit = useCallback(() => submitForm(state, dispatch, rules, getActiveFields, extraValidation, onSubmit), [
-			state,
-			rules,
-			getActiveFields,
-			extraValidation,
-			onSubmit,
-		]);
-		const reset = useCallback(() => resetForm(initialValues, initialExtras, dispatch), [initialExtras, initialValues, dispatch])
+		const submit = useCallback(
+			() => submitForm(state, dispatch, rules, getActiveFields, extraValidation, onSubmit),
+			[state, rules, getActiveFields, extraValidation, onSubmit]
+		);
+		const reset = useCallback(
+			() => resetForm(initialValues, initialExtras, dispatch),
+			[initialExtras, initialValues, dispatch]
+		);
 		const handleSubmit = useCallback((event) => (event.preventDefault(), submit()), [submit]);
 		const handleReset = useCallback((event) => (event.preventDefault(), reset()), [reset]);
 		return (
