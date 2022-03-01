@@ -9,6 +9,7 @@ export default () => {
 	const {
 		state: {initialValues, values, errors, extras},
 		submit,
+		reset,
 	} = useContext(FormContext);
 	return {
 		initialValues,
@@ -16,6 +17,7 @@ export default () => {
 		errors,
 		extras,
 		submit,
+		reset,
 		isChanged: () => !isEqual(initialValues, values),
 		hasErrors: () => Object.values(errors).some(isNotNull),
 	};
