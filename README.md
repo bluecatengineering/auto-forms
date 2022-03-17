@@ -65,8 +65,7 @@ const FormExample = () => {
 			rules={rules}
 			onSubmit={(values) => {
 				sendData(values.name);
-			}}
-		>
+			}}>
 			<AutoWiredTextInput name="name" />
 			<AutoWiredSubmit />
 		</Form>
