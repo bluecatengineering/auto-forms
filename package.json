@@ -3,10 +3,9 @@
   "version": "0.6.1",
   "description": "Auto-wired form hooks",
   "license": "ISC",
+  "sideEffects": false,
   "scripts": {
-    "build:es5": "rm -rf es5 && BABEL_ENV=es5 babel -d es5 src",
-    "build:es6": "rm -rf es6 && BABEL_ENV=es6 babel -d es6 src",
-    "build": "npm run build:es5 && npm run build:es6",
+    "build": "rm -rf dist && babel -d dist --env-name production src",
     "test": "jest --verbose",
     "test-ci": "npm ci && jest --ci --silent --reporters=jest-junit",
     "lint": "eslint src",
@@ -24,10 +23,9 @@
     "form"
   ],
   "files": [
-    "index.js",
-    "es5",
-    "es6"
+    "dist"
   ],
+  "exports": "./dist/index.js",
   "peerDependencies": {
     "react": ">= 16.8"
   },
