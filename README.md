@@ -2,6 +2,8 @@
 
 Auto-forms is a library that helps you quickly create "auto-wired" forms in React. Auto-Forms is a small library which ensures the least amount of performance hit possible, and makes it easy to create forms that already have the values, validation functions, error messages, and submit functions all work seamlessly together.
 
+:warning: Notice: the contents of this repository are now part of the [Pelagos monorepo](https://github.com/bluecatengineering/pelagos-packages), this repository is now archived.
+
 ## Getting Started
 
 ```bash
